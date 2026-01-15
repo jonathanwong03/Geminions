@@ -20,7 +20,7 @@ passport.deserializeUser(async (id, done) => {
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: "/auth/google/callback"
+    callbackURL: "http://localhost:3000/auth/google/callback"
   },
   async function(accessToken, refreshToken, profile, done) {
     try {
@@ -41,7 +41,7 @@ passport.use(new GoogleStrategy({
           if (userByEmail) {
              const { data: updated, error: updateError } = await supabase
                 .from('users')
-                .update({ google_id: profile.id, avatar_url: profile.photos[0]?.value })
+                .update({ google_id: profile.id })
                 .eq('id', userByEmail.id)
                 .select()
                 .single();
@@ -51,8 +51,7 @@ passport.use(new GoogleStrategy({
         const newUser = {
           google_id: profile.id,
           email: profile.emails[0].value,
-          username: profile.displayName,
-          avatar_url: profile.photos[0]?.value
+          username: profile.displayName
         };
         
         const { data, error: insertError } = await supabase
