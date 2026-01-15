@@ -1,0 +1,65 @@
+:root {
+  --minion-yellow: #f5e050;
+  --minion-blue: #0057ae;
+  --cute-font: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', sans-serif; /* Fallback to cute fonts */
+  --bg-color: #f0f4f8;
+  --card-bg: #ffffff;
+}
+
+body {
+  margin: 0;
+  font-family: var(--cute-font);
+  background-color: var(--bg-color);
+  color: #333;
+}
+
+button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.minion-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  padding: 20px;
+  transition: transform 0.2s;
+}
+
+.minion-card:hover {
+  transform: translateY(-5px);
+}
+
+.btn-primary {
+  background-color: var(--minion-blue);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.btn-secondary {
+  background-color: var(--minion-yellow);
+  color: var(--minion-blue);
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 2px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+input:focus {
+  border-color: var(--minion-blue);
+  outline: none;
+}
