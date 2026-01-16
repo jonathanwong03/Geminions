@@ -24,12 +24,12 @@ const Register = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--minion-blue)' }}>
-      <div className="minion-card" style={{ width: '400px', textAlign: 'center' }}>
+    <div className="auth-wrapper auth-bg-blue">
+      <div className="minion-card auth-card">
         <h1 style={{ color: '#000' }}>Join the Tribe!</h1>
         <p>Start your journey with us.</p>
         
-        <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '1rem' }}>
+        <form onSubmit={handleRegister} className="form-group mt-1">
           <input 
             type="text" 
             placeholder="Username" 
@@ -61,7 +61,7 @@ const Register = () => {
           <button type="submit" className="btn-secondary">Register & Login</button>
         </form>
 
-        <p style={{ marginTop: '1rem' }}>
+        <p className="mt-1">
           Already have an account? <Link to="/login" style={{ color: 'var(--minion-blue)', fontWeight: 'bold' }}>Login</Link>
         </p>
       </div>

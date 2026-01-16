@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Folder, Palette, FileText, Download, History, LogOut, Zap, MessageSquare, Video, ShieldCheck, User } from 'lucide-react';
+import { LayoutDashboard, Folder, Palette, FileText, Download, History, LogOut, Zap, MessageSquare, Video, ShieldCheck, User, Menu, X } from 'lucide-react';
 
-const Sidebar = ({ user, handleLogout }) => (
-  <div style={{ width: '250px', background: 'white', padding: '20px', display: 'flex', flexDirection: 'column', height: '100vh', boxSizing: 'border-box', position: 'fixed', left: 0, top: 0 }}>
-    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '40px' }}>
-      <div style={{ width: '40px', height: '40px', background: 'var(--minion-yellow)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px', fontSize: '20px' }}>👀</div>
-      <h2 style={{ margin: 0, color: '#333' }}>Grumini</h2>
+const Sidebar = ({ user, handleLogout, isOpen, onClose }) => (
+  <div className={`sidebar ${isOpen ? 'open' : ''}`}>
+    <div style={{ display: 'flex', alignItems: 'center', marginBottom: '40px', justifyContent: 'space-between' }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ width: '40px', height: '40px', background: 'var(--minion-yellow)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px', fontSize: '20px' }}>👀</div>
+        <h2 style={{ margin: 0, color: '#333' }}>Grumini</h2>
+      </div>
+      <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#333' }} className="block md:hidden">
+          <X size={24} />
+      </button>
     </div>
     
     <nav style={{ flex: 1 }}>
@@ -48,7 +53,7 @@ const NavItem = ({ icon, text, active }) => (
 );
 
 const FeatureCard = ({ title, description, icon, color }) => (
-  <div className="minion-card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+  <div className="minion-card" style={{ display: 'flex', flexDirection: 'column', height: '100%'}}>
     <div style={{ background: color + '20', width: '50px', height: '50px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: color, marginBottom: '15px' }}>
       {icon}
     </div>
@@ -66,6 +71,7 @@ const StatCard = ({ label, value, color }) => (
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -96,29 +102,40 @@ const Dashboard = () => {
   if (!user) return <div style={{height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>Loading...</div>;
 
   return (
-    <div style={{ display: 'flex', background: '#f5f7fa', minHeight: '100vh' }}>
-      <Sidebar user={user} handleLogout={handleLogout} />
+    <div className="dashboard-container">
+      <div className={`overlay ${isSidebarOpen ? 'open' : ''}`} onClick={() => setIsSidebarOpen(false)}></div>
+      <Sidebar 
+        user={user} 
+        handleLogout={handleLogout} 
+        isOpen={isSidebarOpen} 
+        onClose={() => setIsSidebarOpen(false)} 
+      />
       
-      <main style={{ flex: 1, padding: '40px', marginLeft: '250px', overflowY: 'auto' }}>
-        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
-          <div>
-            <h1 style={{ margin: 0, fontSize: '2rem' }}>Dashboard</h1>
-            <p style={{ color: '#666' }}>Welcome back, {user.username || 'Minion'}!</p>
+      <main className="main-content">
+        <header className="dashboard-header">
+          <div className="title-group" style={{ display: 'flex', alignItems: 'center' }}>
+            <button className="menu-toggle" onClick={() => setIsSidebarOpen(true)}>
+              <Menu size={24} />
+            </button>
+            <div>
+              <h1 style={{ margin: 0, fontSize: '2rem' }}>Dashboard</h1>
+              <p style={{ color: '#666' }}>Welcome back, {user.username || 'Minion'}!</p>
+            </div>
           </div>
-          <div style={{ display: 'flex', gap: '15px' }}>
+          <div className="header-actions">
               <button className="btn-primary">Create Campaign</button>
               <button className="btn-secondary" style={{ background: '#e0e0e0', color: '#333' }}>Export Pack</button>
           </div>
         </header>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '40px' }}>
+        <div className="stats-grid">
              <StatCard label="Assets Generated" value="128" color="var(--minion-blue)" />
              <StatCard label="Avg Brand Score" value="82%" color="var(--minion-blue)" />
              <StatCard label="Passing Rate" value="4" color="var(--minion-yellow)" />
         </div>
 
-        <h2 style={{ marginBottom: '20px' }}>Core Features</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+        <h2 style={{ marginBottom: '30px' }}>Core Features</h2>
+        <div className="features-grid" >
           <FeatureCard 
             title="Brand DNA Vault" 
             description="Analyzes brand guidelines to create a 'Vibe Vector' ensuring strict adherence to hex codes and tone." 

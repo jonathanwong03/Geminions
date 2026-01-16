@@ -24,22 +24,22 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--minion-yellow)' }}>
-      <div className="minion-card" style={{ width: '400px', textAlign: 'center' }}>
+    <div className="auth-wrapper auth-bg-yellow">
+      <div className="minion-card auth-card">
         <h1 style={{ color: 'var(--minion-blue)' }}>Bello! Login</h1>
         <p>Sign in to start creating awesome designs!</p>
         
-        <button onClick={handleGoogleLogin} className="btn-primary" style={{ width: '100%', marginBottom: '1rem', background: '#DB4437' }}>
+        <button onClick={handleGoogleLogin} className="btn-primary w-full mb-1" style={{ background: '#DB4437' }}>
           Sign in with Google
         </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', margin: '1rem 0' }}>
-            <div style={{ flex: 1, borderBottom: '1px solid #ddd' }}></div>
-            <span style={{ margin: '0 10px', color: '#888' }}>OR</span>
-            <div style={{ flex: 1, borderBottom: '1px solid #ddd' }}></div>
+        <div className="divider-container">
+            <div className="divider-line"></div>
+            <span className="divider-text">OR</span>
+            <div className="divider-line"></div>
         </div>
 
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <form onSubmit={handleLogin} className="form-group">
           <input 
             type="email" 
             placeholder="Email" 
@@ -57,7 +57,7 @@ const Login = () => {
           <button type="submit" className="btn-primary">Log In</button>
         </form>
 
-        <p style={{ marginTop: '1rem' }}>
+        <p className="mt-1">
           New here? <Link to="/register" style={{ color: 'var(--minion-blue)', fontWeight: 'bold' }}>Register</Link>
         </p>
       </div>
