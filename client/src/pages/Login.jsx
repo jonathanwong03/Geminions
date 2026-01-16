@@ -18,7 +18,9 @@ const Login = () => {
   };
 
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:3000/auth/google';
+    // Use the same server URL logic as configured in main.jsx
+    const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+    window.location.href = `${serverUrl}/auth/google`;
   };
 
   return (

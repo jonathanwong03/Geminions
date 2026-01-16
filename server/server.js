@@ -11,12 +11,16 @@ const PORT = process.env.PORT || 3000;
 const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
 
 // Middleware
+app.set('trust proxy', 1); // Required for secure cookies behind a proxy (like Render)
+
 app.use(cors({
   origin: CLIENT_URL,
   credentials: true
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Session Config (3 hours)
 app.use(session({
@@ -25,9 +29,9 @@ app.use(session({
   saveUninitialized: false,
   cookie: { 
     maxAge: 3 * 60 * 60 * 1000, 
-    secure: false, // Set to true if using https
+    secure: isProduction, // Secure in production (HTTPS)
     httpOnly: true,
-    sameSite: 'lax'
+    sameSite: isProduction ? 'none' : 'lax' // 'none' for cross-site cookies in prod
   }
 }));
 
