@@ -3,6 +3,7 @@ import { Plus, Search, MoreHorizontal, MessageSquare, Zap, Image as ImageIcon, T
 import Header from '../components/Header';
 
 const Projects = () => {
+  const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
   const [prompt, setPrompt] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -13,7 +14,6 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
       const response = await fetch(`${serverUrl}/api/projects`, {
          credentials: 'include' // Important for session cookie
       });
@@ -56,7 +56,7 @@ const Projects = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
     try {
-        const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
+        const response = await fetch(`${serverUrl}/api/projects/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -109,7 +109,7 @@ const Projects = () => {
         formData.append('images', file);
       });
 
-      const response = await fetch('http://localhost:3000/api/remix', {
+      const response = await fetch(`${serverUrl}/api/remix`, {
         method: 'POST',
         body: formData,
         credentials: 'include'
