@@ -62,5 +62,13 @@
     "imageUrl": "http://localhost:3000/generated/remixed_image_1769659676906_0.jpeg",
     "createdAt": "2026-01-29T04:07:56.916Z",
     "reasoning": "Updated by Gemini 2.5 Flash Image Preview."
+  },
+  {
+    "id": 1770530469853,
+    "userId": 4,
+    "title": "Edit: make the cat blue",
+    "imageUrl": "http://localhost:3000/generated/remixed_image_1770530505492_0.jpeg",
+    "createdAt": "2026-02-08T06:01:45.500Z",
+    "reasoning": "Updated by Gemini 2.5 Flash Image Preview."
   }
 ]
