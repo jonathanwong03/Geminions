@@ -13,7 +13,8 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/projects', {
+      const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+      const response = await fetch(`${serverUrl}/api/projects`, {
          credentials: 'include' // Important for session cookie
       });
       if (response.ok) {
