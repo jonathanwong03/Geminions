@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, Folder, User, Zap, MessageSquare, Video, ShieldCheck, History } from 'lucide-react';
-import { useOutletContext } from 'react-router-dom';
+import { useOutletContext, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 
 const FeatureCard = ({ title, description, icon, color }) => (
@@ -22,6 +22,57 @@ const StatCard = ({ label, value, color }) => (
 
 const Dashboard = () => {
   const { user } = useOutletContext();
+  const navigate = useNavigate();
+  const [stats, setStats] = useState({ generated: 0, brandScore: 0, passingRate: 0 });
+  const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const [projectsRes] = await Promise.all([
+            fetch(`${serverUrl}/api/projects`, { credentials: 'include' })
+        ]);
+
+        if (projectsRes.ok) {
+            const projects = await projectsRes.json();
+            
+            const totalCount = projects.length;
+            
+            // Real logic: Average the scores stored in projects
+            let totalBrandScore = 0;
+            let totalSatScore = 0;
+            let ratedBrandCount = 0;
+            let ratedSatCount = 0;
+
+            projects.forEach(p => {
+                if (p.brandScore) {
+                    totalBrandScore += p.brandScore;
+                    ratedBrandCount++;
+                }
+                if (p.satisfactionScore) {
+                    totalSatScore += p.satisfactionScore;
+                    ratedSatCount++;
+                }
+            });
+
+            // If no data, fallback to "New User" stats (e.g., 100% or 0%)
+            // Scale is 1-10, so multiply by 10 for percentage
+            const brandScore = ratedBrandCount > 0 ? Math.round((totalBrandScore / ratedBrandCount) * 10) : 0;
+            const passingRate = ratedSatCount > 0 ? Math.round((totalSatScore / ratedSatCount) * 10) : 0;
+
+            setStats({
+                generated: totalCount,
+                brandScore,
+                passingRate
+            });
+        }
+      } catch (error) {
+          console.error("Failed to fetch dashboard stats", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div>
@@ -29,21 +80,21 @@ const Dashboard = () => {
             title="Dashboard" 
             subtitle={`Welcome back, ${user?.username || 'Minion'}!`}
         >
-            <button className="btn-primary">Create Campaign</button>
-            <button className="btn-secondary" style={{ background: '#e0e0e0', color: '#333' }}>Export Pack</button>
+            <button className="btn-primary" onClick={() => navigate('/projects')}>Create Campaign</button>
+            <button className="btn-secondary" style={{ background: '#e0e0e0', color: '#333' }} onClick={() => navigate('/exports')}>Export Pack</button>
         </Header>
 
         <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px', marginBottom: '40px' }}>
-             <StatCard label="Assets Generated" value="128" color="var(--minion-blue)" />
-             <StatCard label="Avg Brand Score" value="82%" color="var(--minion-blue)" />
-             <StatCard label="Passing Rate" value="4" color="var(--minion-yellow)" />
+             <StatCard label="Assets Generated" value={stats.generated} color="var(--minion-blue)" />
+             <StatCard label="Avg Brand Score" value={`${stats.brandScore}%`} color="var(--minion-blue)" />
+             <StatCard label="Passing Rate" value={`${stats.passingRate}%`} color="var(--minion-yellow)" />
         </div>
 
         <h2 style={{ marginBottom: '30px' }}>Core Features</h2>
         <div className="features-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
           <FeatureCard 
             title="Brand DNA Vault" 
-            description="Analyzes brand guidelines to create a 'Vibe Vector' ensuring strict adherence to hex codes and tone." 
+            description="Analyzes brand guidelines to ensure strict adherence to hex codes and tone." 
             icon={<ShieldCheck size={24} />} color="#0057ae" 
           />
           <FeatureCard 

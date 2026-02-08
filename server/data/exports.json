@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1770550939504,
+    "userId": 14,
+    "name": "Instagram Story_Adapted.png",
+    "type": "image",
+    "format": "PNG",
+    "project": "generate an image of...",
+    "url": "http://localhost:3000/generated/remixed_image_1770550856842_0.jpeg",
+    "status": "Ready",
+    "timestamp": 1770550939504
+  },
+  {
+    "id": 1770550960504,
+    "userId": 14,
+    "name": "LinkedIn Banner_Adapted.png",
+    "type": "image",
+    "format": "PNG",
+    "project": "generate an image of...",
+    "url": "http://localhost:3000/generated/remixed_image_1770550856842_0.jpeg",
+    "status": "Ready",
+    "timestamp": 1770550960504
+  },
+  {
+    "id": 1770567315095,
+    "userId": 3,
+    "name": "Reels 9:16_Adapted_1770567315095.png",
+    "type": "video",
+    "format": "PNG",
+    "project": "Edit: change this in...",
+    "url": "http://localhost:3000/generated/remixed_image_1770567315088_0.jpeg",
+    "status": "Ready",
+    "timestamp": 1770567315095
+  },
+  {
+    "id": 1770570498185,
+    "userId": 3,
+    "name": "Instagram Story_Adapted_1770570498186.png",
+    "type": "image",
+    "format": "PNG",
+    "project": "generate a logo of a...",
+    "url": "http://localhost:3000/generated/remixed_image_1770570498173_0.jpeg",
+    "status": "Ready",
+    "timestamp": 1770570498186
+  }
+]

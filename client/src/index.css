@@ -238,6 +238,7 @@ input:focus {
   }
 
   .dashboard-header {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 20px;
@@ -265,4 +266,14 @@ input:focus {
   .features-grid {
       grid-template-columns: 1fr;
   }
+}
+
+/* Spinner */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
 }

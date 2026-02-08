@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 
 const Layout = () => {
   const [user, setUser] = useState(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -47,14 +47,15 @@ const Layout = () => {
          onClose={() => setIsSidebarOpen(false)} 
       />
       
-      <div style={{ flex: 1, marginLeft: isSidebarOpen ? '0' : '0', transition: 'margin 0.3s', display: 'flex', flexDirection: 'column' }} className="main-content">
-        <header style={{ padding: '20px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }} className="block md:hidden">
-            <button onClick={() => setIsSidebarOpen(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#333' }}>
-                <Menu size={24} />
-            </button>
-        </header>
-        
-        <main style={{ padding: '0 20px', maxWidth: '1200px', width: '100%', boxSizing: 'border-box', margin: '0 auto' }}>
+      <div style={{ flex: 1, marginLeft: isSidebarOpen ? '290px' : '0', transition: 'margin 0.3s', display: 'flex', flexDirection: 'column' }} className="main-content">
+        {!isSidebarOpen && (
+            <div style={{ position: 'fixed', top: 20, right: 20, zIndex: 50 }}>
+                <button onClick={() => setIsSidebarOpen(true)} style={{ background: 'white', border: '1px solid #ddd', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', color: '#333', boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}>
+                    <Menu size={24} />
+                </button>
+            </div>
+        )}
+        <main style={{ padding: '0 20px', maxWidth: '1200px', width: '100%', boxSizing: 'border-box', margin: '0 auto', paddingTop: '20px' }}>
             <Outlet context={{ user }} />
         </main>
       </div>
@@ -72,23 +73,14 @@ const Layout = () => {
             overflow-y: auto;
             z-index: 100;
             transition: transform 0.3s ease-in-out;
+            transform: translateX(-100%);
         }
         
-        .main-content {
-            margin-left: 290px !important; /* width + padding */
+        .sidebar.open {
+            transform: translateX(0);
         }
-        
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .main-content {
-                margin-left: 0 !important;
-            }
-        }
+
+        /* Desktop override if needed, but we controlling via JS marginLeft now mostly */
       `}</style>
     </div>
   );

@@ -15,7 +15,7 @@ const Sidebar = ({ user, handleLogout, isOpen, onClose }) => {
           <div style={{ width: '40px', height: '40px', background: 'var(--minion-yellow)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: '10px', fontSize: '20px' }}>👀</div>
           <h2 style={{ margin: 0, color: '#333' }}>Grumini</h2>
         </div>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#333' }} className="block md:hidden">
+        <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#333' }}>
             <X size={24} />
         </button>
       </div>

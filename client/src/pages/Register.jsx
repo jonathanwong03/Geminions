@@ -17,7 +17,8 @@ const Register = () => {
     
     try {
       await axios.post('/auth/register', { email, password, username });
-      navigate('/dashboard');
+      // navigate('/dashboard'); // Removed auto-login redirect
+      navigate('/login');
     } catch (err) {
       alert('Registration failed: ' + (err.response?.data?.message || err.message));
     }

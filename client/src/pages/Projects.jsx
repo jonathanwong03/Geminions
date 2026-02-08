@@ -3,7 +3,6 @@ import { Plus, Search, MoreHorizontal, MessageSquare, Zap, Image as ImageIcon, T
 import Header from '../components/Header';
 
 const Projects = () => {
-  const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
   const [prompt, setPrompt] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -14,7 +13,9 @@ const Projects = () => {
 
   const fetchProjects = async () => {
     try {
-      const response = await fetch(`${serverUrl}/api/projects`, {
+      const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+      // Filter out 'analysis' type projects to show only generated assets
+      const response = await fetch(`${serverUrl}/api/projects?excludeType=analysis`, {
          credentials: 'include' // Important for session cookie
       });
       if (response.ok) {
@@ -56,7 +57,7 @@ const Projects = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
     try {
-        const response = await fetch(`${serverUrl}/api/projects/${id}`, {
+        const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -68,6 +69,33 @@ const Projects = () => {
     } catch (error) {
         console.error("Error deleting project", error);
     }
+  };
+
+  const handleRate = async (id, type, value) => {
+      try {
+          const payload = {};
+          if (type === 'brand') payload.brandScore = value;
+          if (type === 'satisfaction') payload.satisfactionScore = value;
+
+          const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+          const response = await fetch(`${serverUrl}/api/projects/${id}/rate`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+              credentials: 'include'
+          });
+
+          if (response.ok) {
+              setGeneratedProjects(prev => prev.map(p => {
+                  if (p.id === id) {
+                      return { ...p, ...payload };
+                  }
+                  return p;
+              }));
+          }
+      } catch (error) {
+          console.error("Error rating project", error);
+      }
   };
 
   const handleEdit = async (project) => {
@@ -109,7 +137,7 @@ const Projects = () => {
         formData.append('images', file);
       });
 
-      const response = await fetch(`${serverUrl}/api/remix`, {
+      const response = await fetch('http://localhost:3000/api/remix', {
         method: 'POST',
         body: formData,
         credentials: 'include'
@@ -142,9 +170,7 @@ const Projects = () => {
         title="Projects" 
         subtitle="The Agency Interface & Generative Core"
       >
-        <button className="btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <Plus size={20} /> New Project
-        </button>
+       
       </Header>
 
       <div className="minion-card" style={{ marginBottom: '20px', padding: '30px', background: 'linear-gradient(135deg, #0057ae 0%, #0077ee 100%)', color: 'white' }}>
@@ -257,6 +283,37 @@ const Projects = () => {
                         <Trash2 size={20} />
                     </button>
                     {/* <MoreHorizontal size={20} color="#999" style={{ cursor: 'pointer' }} /> */}
+                </div>
+            </div>
+            
+            <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
+                <div style={{ flex: 1, padding: '10px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
+                    <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--minion-blue)' }}>
+                        {(project.brandScore || 0) * 10}%
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: '#666', marginBottom: '5px' }}>Brand Score</div>
+                    <select 
+                        value={project.brandScore || 0}
+                        onChange={(e) => handleRate(project.id, 'brand', Number(e.target.value))}
+                        style={{ width: '100%', fontSize: '0.8rem', padding: '2px', border: '1px solid #ddd', borderRadius: '4px' }}
+                    >
+                         <option value="0">-</option>
+                         {[...Array(11).keys()].slice(1).map(n => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                </div>
+                <div style={{ flex: 1, padding: '10px', background: '#f8f9fa', borderRadius: '8px', textAlign: 'center' }}>
+                     <div style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#ffcc00' }}>
+                        {(project.satisfactionScore || 0) * 10}%
+                    </div>
+                    <div style={{ fontSize: '0.7rem', color: '#666', marginBottom: '5px' }}>Satisfaction</div>
+                    <select 
+                        value={project.satisfactionScore || 0}
+                        onChange={(e) => handleRate(project.id, 'satisfaction', Number(e.target.value))}
+                        style={{ width: '100%', fontSize: '0.8rem', padding: '2px', border: '1px solid #ddd', borderRadius: '4px' }}
+                    >
+                         <option value="0">-</option>
+                         {[...Array(11).keys()].slice(1).map(n => <option key={n} value={n}>{n}</option>)}
+                    </select>
                 </div>
             </div>
           </div>
