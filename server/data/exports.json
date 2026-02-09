@@ -42,5 +42,16 @@
     "url": "http://localhost:3000/generated/remixed_image_1770570498173_0.jpeg",
     "status": "Ready",
     "timestamp": 1770570498186
+  },
+  {
+    "id": 1770614569521,
+    "userId": 3,
+    "name": "Instagram Story_Adapted_1770614569521.png",
+    "type": "image",
+    "format": "PNG",
+    "project": "generate a logo of a...",
+    "url": "http://localhost:3000/generated/remixed_image_1770614569508_0.jpeg",
+    "status": "Ready",
+    "timestamp": 1770614569521
   }
 ]

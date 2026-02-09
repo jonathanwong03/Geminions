@@ -57,7 +57,8 @@ const Projects = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this project?")) return;
     try {
-        const response = await fetch(`http://localhost:3000/api/projects/${id}`, {
+        const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+        const response = await fetch(`${serverUrl}/api/projects/${id}`, {
             method: 'DELETE',
             credentials: 'include'
         });
@@ -137,7 +138,8 @@ const Projects = () => {
         formData.append('images', file);
       });
 
-      const response = await fetch('http://localhost:3000/api/remix', {
+      const serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:3000';
+      const response = await fetch(`${serverUrl}/api/remix`, {
         method: 'POST',
         body: formData,
         credentials: 'include'
